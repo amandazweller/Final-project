@@ -1,0 +1,10 @@
+data/
+__pycache__/
+*.egg-info/
+*.pyc
+.streamlit/
+.env
+dist/
+build/
+*.csv
+
