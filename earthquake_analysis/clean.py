@@ -1,19 +1,22 @@
 """
 clean.py — Clean the merged USGS+NCEI earthquake dataset.
 
-Main entry point:
-    clean_merged(df) → cleaned DataFrame
+Public functions:
+    clean_merged(df)         → full cleaned DataFrame  (saved as cleaned.csv)
+    make_analysis_subset(df) → rows with deaths + magnitude + damage_order present
+                               (saved as analysis_subset.csv, used by the app)
 
-Steps:
+Steps inside clean_merged:
   1. Coerce impact and physics columns to numeric.
   2. Drop duplicate USGS events (same usgs_id matched twice).
   3. Remove rows with no usable magnitude.
-  4. Add a 'magnitude' convenience column (USGS preferred, NCEI fallback).
-  5. Add a 'year' column from usgs_time.
-  6. Add a 'depth_category' column (shallow / intermediate / deep).
-  7. Add a 'region' column parsed from ncei_locationName.
-  8. Drop NCEI columns that duplicate USGS data (time, lat/lon, depth, date parts).
-  9. Rename all remaining columns to clean, consistent snake_case names.
+  4. Remove rows with no timestamp or no lat/lon.
+  5. Add a 'magnitude' convenience column (USGS preferred, NCEI fallback).
+  6. Add a 'year' column from usgs_time.
+  7. Add a 'depth_category' column (shallow / intermediate / deep).
+  8. Add a 'region' column parsed from ncei_locationName.
+  9. Drop NCEI columns that duplicate USGS data (time, lat/lon, depth, date parts).
+  10. Rename all remaining columns to clean, consistent snake_case names.
 """
 
 import numpy as np
@@ -154,19 +157,29 @@ def clean_merged(df: pd.DataFrame) -> pd.DataFrame:
     df = df[~mag_missing].reset_index(drop=True)
     print(f"Kept {len(df)} rows with a valid magnitude")
 
-    # 4. Add a single 'magnitude' column (USGS preferred, NCEI fallback)
+    # 4. Drop rows missing timestamp or location — can't be placed in time or space
+    before = len(df)
+    time_col = "usgs_time" if "usgs_time" in df.columns else None
+    lat_col  = next((c for c in ["usgs_latitude", "latitude"] if c in df.columns), None)
+    lon_col  = next((c for c in ["usgs_longitude", "longitude"] if c in df.columns), None)
+    required = [c for c in [time_col, lat_col, lon_col] if c]
+    if required:
+        df = df.dropna(subset=required).reset_index(drop=True)
+        print(f"Dropped {before - len(df)} rows missing time or location")
+
+    # 5. Add a single 'magnitude' column (USGS preferred, NCEI fallback)
     df["magnitude"] = df["usgs_magnitude"].fillna(
         pd.to_numeric(df.get("ncei_eqMagnitude"), errors="coerce")
     )
 
-    # 5. Year column
+    # 6. Year column
     if "usgs_time" in df.columns:
         df["usgs_time"] = pd.to_datetime(df["usgs_time"], utc=True, errors="coerce")
         df["year"] = df["usgs_time"].dt.year
     elif "ncei_year" in df.columns:
         df["year"] = pd.to_numeric(df["ncei_year"], errors="coerce")
 
-    # 6. Depth category (adjusted for more even count distribution)
+    # 7. Depth category (adjusted for more even count distribution)
     # 0–30 km: upper crust (very shallow); 30–150 km: lower crust/upper mantle; 150+ km: deep
     if "usgs_depth" in df.columns:
         df["depth_category"] = pd.cut(
@@ -175,19 +188,43 @@ def clean_merged(df: pd.DataFrame) -> pd.DataFrame:
             labels=["shallow", "intermediate", "deep"],
         )
 
-    # 7. Region from NCEI location name (everything after the last comma, or the whole string)
+    # 8. Region from NCEI location name (everything after the last comma, or the whole string)
     if "ncei_locationName" in df.columns:
         df["region"] = df["ncei_locationName"].apply(_extract_region)
 
-    # 8. Drop NCEI columns that duplicate USGS data (time, lat/lon, depth)
+    # 9. Drop NCEI columns that duplicate USGS data (time, lat/lon, depth)
     cols_to_drop = [c for c in NCEI_DUPLICATE_COLS if c in df.columns]
     if cols_to_drop:
         df = df.drop(columns=cols_to_drop)
 
-    # 9. Rename all columns to clean, consistent snake_case names
+    # 10. Rename all columns to clean, consistent snake_case names
     df = df.rename(columns={k: v for k, v in COLUMN_RENAMES.items() if k in df.columns})
 
     return df
+
+
+def make_analysis_subset(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Produce the analysis-ready subset from the full cleaned DataFrame.
+
+    Keeps only rows where deaths, magnitude, and damage_order are all present —
+    the minimum columns needed to answer all four research questions.
+
+    Returns a reset-index copy.
+    """
+    required = [c for c in ["deaths", "magnitude", "damage_order"] if c in df.columns]
+    subset = df.dropna(subset=required).reset_index(drop=True)
+
+    # Drop columns where more than 80% of values are missing
+    before_cols = subset.shape[1]
+    subset = subset.loc[:, subset.isna().mean() <= 0.8]
+    dropped_cols = before_cols - subset.shape[1]
+    print(
+        f"Analysis subset: {len(subset):,} rows "
+        f"({len(subset)/len(df):.1%} of cleaned data), "
+        f"{subset.shape[1]} columns ({dropped_cols} dropped for >80% null)"
+    )
+    return subset
 
 
 def _extract_region(location_name) -> str:

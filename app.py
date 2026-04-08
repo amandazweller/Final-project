@@ -23,7 +23,7 @@ from earthquake_analysis.analyze import (
     rolling_average,
 )
 
-CLEANED_PATH = os.path.join(os.path.dirname(__file__), "data", "cleaned.csv")
+CLEANED_PATH = os.path.join(os.path.dirname(__file__), "data", "analysis_subset.csv")
 
 st.set_page_config(page_title="Global Earthquake Analysis", layout="wide")
 st.title("🌍 Global Earthquake Patterns & Real-World Impact (2000–2024)")
@@ -40,7 +40,7 @@ def load_data(path: str) -> pd.DataFrame:
 
 if not os.path.exists(CLEANED_PATH):
     st.error(
-        f"Cleaned dataset not found at `{CLEANED_PATH}`.\n\n"
+        f"Analysis dataset not found at `{CLEANED_PATH}`.\n\n"
         "Run the pipeline first:\n```\npython scripts/run_pipeline.py\n```"
     )
     st.stop()

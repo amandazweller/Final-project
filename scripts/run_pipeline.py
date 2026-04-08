@@ -1,19 +1,19 @@
 """
 scripts/run_pipeline.py
 =======================
-Fetch → Merge → Clean → Save
+Fetch → Merge → Clean → Subset → Save
 
-Run this once to build the cleaned dataset used by the Streamlit app
-and any further analysis.
+Run this once to build all datasets used by the Streamlit app.
 
 Usage:
     python scripts/run_pipeline.py
 
 Outputs (written to data/):
-    usgs_raw.csv      — raw USGS fetch
-    ncei_raw.csv      — raw NCEI fetch
-    merged.csv        — after approximate match
-    cleaned.csv       — after cleaning (use this for analysis)
+    usgs_raw.csv          — raw USGS fetch
+    ncei_raw.csv          — raw NCEI fetch
+    merged.csv            — after approximate match
+    cleaned.csv           — full cleaned dataset (all matched rows)
+    analysis_subset.csv   — rows with deaths + magnitude + damage_order (used by app)
 """
 
 import os
@@ -25,7 +25,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import pandas as pd
 from earthquake_analysis.fetch import fetch_ncei, fetch_usgs
 from earthquake_analysis.merge import merge_usgs_ncei
-from earthquake_analysis.clean import clean_merged
+from earthquake_analysis.clean import clean_merged, make_analysis_subset
 
 DATA_DIR   = os.path.join(os.path.dirname(__file__), "..", "data")
 START_DATE = "2000-01-01"
@@ -68,7 +68,16 @@ def main():
     cleaned.to_csv(cleaned_path, index=False)
     print(f"Saved {len(cleaned)} cleaned records → {cleaned_path}\n")
 
-    print("Pipeline complete. Use data/cleaned.csv for analysis.")
+    # ── 4. Analysis subset ────────────────────────────────────────────────────
+    print("=== Building analysis subset ===")
+    subset = make_analysis_subset(cleaned)
+    subset_path = os.path.join(DATA_DIR, "analysis_subset.csv")
+    subset.to_csv(subset_path, index=False)
+    print(f"Saved {len(subset)} subset records → {subset_path}\n")
+
+    print("Pipeline complete.")
+    print("  Full cleaned data : data/cleaned.csv")
+    print("  App / analysis    : data/analysis_subset.csv")
 
 
 if __name__ == "__main__":
