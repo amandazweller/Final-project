@@ -166,11 +166,12 @@ def clean_merged(df: pd.DataFrame) -> pd.DataFrame:
     elif "ncei_year" in df.columns:
         df["year"] = pd.to_numeric(df["ncei_year"], errors="coerce")
 
-    # 6. Depth category (standard seismological brackets)
+    # 6. Depth category (adjusted for more even count distribution)
+    # 0–30 km: upper crust (very shallow); 30–150 km: lower crust/upper mantle; 150+ km: deep
     if "usgs_depth" in df.columns:
         df["depth_category"] = pd.cut(
             df["usgs_depth"],
-            bins=[-np.inf, 70, 300, np.inf],
+            bins=[-np.inf, 30, 150, np.inf],
             labels=["shallow", "intermediate", "deep"],
         )
 

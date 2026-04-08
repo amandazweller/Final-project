@@ -76,7 +76,7 @@ def depth_vs_impact(df: pd.DataFrame) -> pd.DataFrame:
     if "depth_category" not in m5.columns:
         m5["depth_category"] = pd.cut(
             m5["depth"],
-            bins=[-float("inf"), 70, 300, float("inf")],
+            bins=[-float("inf"), 30, 150, float("inf")],
             labels=["shallow", "intermediate", "deep"],
         )
     return (
