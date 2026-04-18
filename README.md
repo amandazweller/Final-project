@@ -26,10 +26,10 @@ earthquake_analysis/
 │   ├── __init__.py      # Public API
 │   ├── fetch.py         # fetch_ncei(), fetch_usgs()
 │   ├── merge.py         # merge_usgs_ncei()
-│   ├── clean.py         # clean_merged()
+│   ├── clean.py         # clean_merged(), make_analysis_subset()
 │   └── analyze.py       # analysis functions for Q1–Q4
 ├── scripts/
-│   └── run_pipeline.py  # Fetch → Merge → Clean → Save
+│   └── run_pipeline.py  # Fetch → Merge → Clean → Subset → Save
 ├── data/                # Created by the pipeline (git-ignored)
 ├── app.py               # Streamlit dashboard
 ├── pyproject.toml
@@ -56,7 +56,8 @@ The pipeline produces:
 - `data/ncei_raw.csv` — raw NCEI fetch
 - `data/usgs_raw.csv` — raw USGS fetch
 - `data/merged.csv` — after approximate matching
-- `data/cleaned.csv` — final cleaned dataset ← use this
+- `data/cleaned.csv` — full cleaned dataset (all matched rows)
+- `data/analysis_subset.csv` — rows with deaths, magnitude, and damage_order present; columns >80% null dropped ← used by the app
 
 > **Note:** Fetching 25 years of USGS data takes several minutes due to API rate limiting. The NCEI fetch is fast (paginated, ~5 k records total).
 
@@ -71,7 +72,7 @@ streamlit run app.py
 ```python
 from earthquake_analysis import (
     fetch_ncei, fetch_usgs,
-    merge_usgs_ncei, clean_merged,
+    merge_usgs_ncei, clean_merged, make_analysis_subset,
     magnitude_vs_impact, yearly_trends,
 )
 
@@ -79,13 +80,14 @@ from earthquake_analysis import (
 df_ncei = fetch_ncei(min_year=2010, max_year=2024)
 df_usgs = fetch_usgs("2010-01-01", "2024-12-31")
 
-# Merge & clean
+# Merge, clean, and build analysis-ready subset
 merged  = merge_usgs_ncei(df_usgs, df_ncei)
 cleaned = clean_merged(merged)
+subset  = make_analysis_subset(cleaned)
 
 # Analyze
-print(magnitude_vs_impact(cleaned))
-print(yearly_trends(cleaned))
+print(magnitude_vs_impact(subset))
+print(yearly_trends(subset))
 ```
 
 ## Module Reference
@@ -107,7 +109,8 @@ print(yearly_trends(cleaned))
 
 | Function | Description |
 |----------|-------------|
-| `clean_merged(df)` | Coerces numerics, drops dupes, adds `magnitude`, `year`, `depth_category`, `region` |
+| `clean_merged(df)` | Coerces numerics, drops dupes and rows missing time/location, adds `magnitude`, `year`, `depth_category`, `region`; renames all columns to snake_case |
+| `make_analysis_subset(df)` | Filters to rows with `deaths`, `magnitude`, and `damage_order` present; drops columns >80% null |
 
 ### `analyze.py`
 

@@ -13,7 +13,7 @@ analyze — Answer the four research questions
 
 from .fetch   import fetch_ncei, fetch_usgs
 from .merge   import merge_usgs_ncei
-from .clean   import clean_merged
+from .clean   import clean_merged, make_analysis_subset
 from .analyze import (
     magnitude_vs_impact,
     deadly_threshold,
@@ -30,6 +30,7 @@ __all__ = [
     "fetch_usgs",
     "merge_usgs_ncei",
     "clean_merged",
+    "make_analysis_subset",
     "magnitude_vs_impact",
     "deadly_threshold",
     "depth_vs_impact",
