@@ -59,7 +59,7 @@ The pipeline produces:
 - `data/cleaned.csv` — full cleaned dataset (all matched rows)
 - `data/analysis_subset.csv` — rows with deaths, magnitude, and damage_order present; columns >80% null dropped ← used by the app
 
-> **Note:** Fetching 25 years of USGS data takes several minutes due to API rate limiting. The NCEI fetch is fast (paginated, ~5 k records total).
+> **Note:** Fetching 25 years of USGS data takes several minutes due to API rate limiting. The NCEI fetch is fast (paginated, ~5 k records total). The USGS fetch takes much longer as it contains ~3 million records.
 
 ### 3. Launch the Streamlit app
 
