@@ -3,7 +3,7 @@ app.py — Streamlit dashboard for earthquake_analysis.
 
 Run:  streamlit run app.py
 
-The app loads data/cleaned.csv (produced by scripts/run_pipeline.py) and
+The app loads data/analysis_subset.csv (produced by scripts/run_pipeline.py) and
 displays interactive charts for each of the four research questions.
 """
 
