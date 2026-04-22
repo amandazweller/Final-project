@@ -1,0 +1,48 @@
+---
+title: "Tutorial"
+---
+
+## Installation
+
+Clone the repository and install the package locally.
+
+~~~bash
+pip install -e .
+~~~
+
+## Run the data pipeline
+
+~~~bash
+python scripts/run_pipeline.py
+~~~
+
+## Example usage
+
+~~~python
+from earthquake_analysis import (
+    fetch_ncei,
+    fetch_usgs,
+    merge_usgs_ncei,
+    clean_merged,
+    magnitude_vs_impact,
+)
+
+df_ncei = fetch_ncei(min_year=2010, max_year=2024)
+df_usgs = fetch_usgs("2010-01-01", "2024-12-31")
+
+merged = merge_usgs_ncei(df_usgs, df_ncei)
+cleaned = clean_merged(merged)
+
+result = magnitude_vs_impact(cleaned)
+print(result.head())
+~~~
+
+## Launch the dashboard
+
+~~~bash
+streamlit run app.py
+~~~
+
+## Notes
+
+The project combines earthquake event data with impact-related data, then summarizes patterns by magnitude, depth, region, and year.

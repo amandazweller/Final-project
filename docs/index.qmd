@@ -1,0 +1,28 @@
+---
+title: "Earthquake Analysis"
+---
+
+## Overview
+
+This project analyzes global earthquake patterns and their real-world human impact using data from USGS and NOAA/NCEI.
+
+## Research Questions
+
+- Does higher magnitude lead to more deaths and damage?
+- Does depth influence earthquake impact?
+- Which regions appear most vulnerable?
+- How has earthquake impact changed over time?
+
+## Dashboard
+
+[Interactive Streamlit App](PUT_STREAMLIT_LINK_HERE)
+
+## Repository
+
+This project includes:
+
+- data collection from public APIs
+- data wrangling and merging
+- exploratory analysis functions
+- an interactive Streamlit dashboard
+- project documentation and report

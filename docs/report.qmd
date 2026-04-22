@@ -1,0 +1,57 @@
+---
+title: "Final Report"
+---
+
+## Introduction
+
+This project examines global earthquake patterns and their real-world human impact from 2000 to 2024. The goal is to combine physical earthquake characteristics with human outcome measures such as deaths and property damage.
+
+## Data
+
+The analysis uses two public data sources:
+
+- USGS earthquake event data  
+- NOAA/NCEI significant earthquake data  
+
+USGS provides broad earthquake event coverage, while NCEI provides impact-related information such as deaths and estimated damage.
+
+## Methods
+
+The two datasets were combined by approximate event matching. Earthquakes were matched within a limited time and geographic window, then the closest magnitude match was selected.
+
+After merging and cleaning, the project analyzed four main questions:
+
+1. whether larger earthquakes tend to produce greater deaths and damage  
+2. whether focal depth is associated with severity  
+3. which regions appear disproportionately vulnerable  
+4. how earthquake-related deaths and damage have changed over time  
+
+Summary tables and visualizations were generated to compare patterns across magnitude groups, depth categories, regions, and years.
+
+## Results
+
+### Magnitude and impact
+
+Higher-magnitude earthquakes generally correspond to higher deaths and higher damage, although the relationship is not perfectly uniform.
+
+### Depth and severity
+
+Shallower earthquakes tend to be associated with greater human impact than deeper events.
+
+### Regional vulnerability
+
+Some regions appear to experience disproportionately high deaths relative to earthquake size, suggesting differences in vulnerability, preparedness, infrastructure, or reporting.
+
+### Trends over time
+
+Annual totals for deaths and damage vary substantially across years. Rolling averages help smooth short-term volatility and highlight broader patterns over time.
+
+## Limitations
+
+This project has several limitations.
+
+First, the merge between datasets is approximate rather than exact. Second, some impact variables contain missing values. Third, reporting quality likely varies across regions and years. Finally, the project is descriptive and should not be interpreted as establishing causal relationships.
+
+## Conclusion
+
+Earthquake impact depends on more than just event magnitude. Depth, region, and broader vulnerability patterns also matter. The results provide a descriptive picture of earthquake risk and impact, while also highlighting the importance of data quality and matching assumptions.
