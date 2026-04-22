@@ -15,7 +15,7 @@ website:
         text: Final Report
     right:
       - icon: github
-        href: https://github.com/PUT-YOUR-USERNAME/Final-project
+        href: https://github.com/amandazweller/Final-project
         aria-label: GitHub Repository
   search: true
   page-footer:

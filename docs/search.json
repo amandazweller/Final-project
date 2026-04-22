@@ -158,7 +158,7 @@
     "href": "index.html#interactive-dashboard",
     "title": "Earthquake Analysis",
     "section": "5 Interactive Dashboard",
-    "text": "5 Interactive Dashboard\nThe project includes a fully interactive Streamlit dashboard that allows users to explore the data and results dynamically.\n👉 [Launch the Streamlit App] (https://stat386earthquakeanalysis.streamlit.app/)\nThe dashboard provides:\n\nmagnitude vs. impact comparisons\n\ndepth-based summaries\n\nregional breakdowns of earthquake impact\n\ntime-series visualizations of deaths and damage"
+    "text": "5 Interactive Dashboard\nThe project includes a fully interactive Streamlit dashboard that allows users to explore the data and results dynamically.\n👉 Launch the Streamlit App\nThe dashboard provides:\n\nmagnitude vs. impact comparisons\n\ndepth-based summaries\n\nregional breakdowns of earthquake impact\n\ntime-series visualizations of deaths and damage"
   },
   {
     "objectID": "index.html#repository-structure",

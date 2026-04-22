@@ -77,7 +77,7 @@ The project follows a full data science pipeline:
 
 The project includes a fully interactive Streamlit dashboard that allows users to explore the data and results dynamically.
 
-👉 [Launch the Streamlit App] (https://stat386earthquakeanalysis.streamlit.app/)
+👉 [Launch the Streamlit App](https://stat386earthquakeanalysis.streamlit.app/)
 
 The dashboard provides:
 
