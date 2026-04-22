@@ -112,6 +112,7 @@ The dashboard provides:
 
 **Issue: Missing dataset when launching the app**  
 → Run the pipeline first:
+
 ~~~bash
 python scripts/run_pipeline.py
 ~~~
@@ -121,6 +122,7 @@ python scripts/run_pipeline.py
 
 **Issue: Import errors**  
 → Ensure the package is installed using:
+
 ~~~bash
 pip install -e .
 ~~~

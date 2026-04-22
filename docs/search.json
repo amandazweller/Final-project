@@ -109,7 +109,7 @@
     "href": "tutorial.html#troubleshooting",
     "title": "Tutorial",
     "section": "7 Troubleshooting",
-    "text": "7 Troubleshooting\nIssue: Missing dataset when launching the app\n→ Run the pipeline first: ~bash python scripts/run_pipeline.py~\nIssue: Slow data retrieval\n→ This is expected when fetching large time ranges from the USGS API\nIssue: Import errors\n→ Ensure the package is installed using: ~bash pip install -e .~"
+    "text": "7 Troubleshooting\nIssue: Missing dataset when launching the app\n→ Run the pipeline first:\npython scripts/run_pipeline.py\nIssue: Slow data retrieval\n→ This is expected when fetching large time ranges from the USGS API\nIssue: Import errors\n→ Ensure the package is installed using:\npip install -e ."
   },
   {
     "objectID": "tutorial.html#summary",
@@ -165,7 +165,7 @@
     "href": "index.html#repository-structure",
     "title": "Earthquake Analysis",
     "section": "6 Repository Structure",
-    "text": "6 Repository Structure\nThe repository is organized as a Python package with modular components:\n\nearthquake_analysis/\n\ndata collection (fetch.py)\n\ndata merging (merge.py)\n\ndata cleaning (clean.py)\n\nanalysis functions (analyze.py)\n\nscripts/\n\npipeline execution (run_pipeline.py)\n\napp.py\n\nStreamlit dashboard\n\ndocs/\n\nQuarto documentation, tutorial, and final report"
+    "text": "6 Repository Structure\nThe repository is organized as a Python package with modular components: 👉 View the Repository\n\nearthquake_analysis/\n\ndata collection (fetch.py)\n\ndata merging (merge.py)\n\ndata cleaning (clean.py)\n\nanalysis functions (analyze.py)\n\nscripts/\n\npipeline execution (run_pipeline.py)\n\napp.py\n\nStreamlit dashboard\n\ndocs/\n\nQuarto documentation, tutorial, and final report"
   },
   {
     "objectID": "index.html#key-takeaways",

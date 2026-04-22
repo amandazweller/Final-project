@@ -132,3 +132,7 @@ __pycache__/
 *.egg-info/
 .streamlit/
 ```
+
+## Read More
+- Read More about our project on our [Git Hub Pages Site](https://amandazweller.github.io/Final-project/)
+- See the [**Final Report**](https://amandazweller.github.io/Final-project/report.html) for a detailed discussion of methods, results, and limitations 
