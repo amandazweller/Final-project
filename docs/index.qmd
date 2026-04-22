@@ -4,25 +4,123 @@ title: "Earthquake Analysis"
 
 ## Overview
 
-This project analyzes global earthquake patterns and their real-world human impact using data from USGS and NOAA/NCEI.
+This project analyzes global earthquake patterns and their real-world human impact from 2000 to 2024. The goal is to move beyond purely physical characteristics of earthquakes (such as magnitude and depth) and examine how these events translate into human consequences, including deaths and economic damage.
+
+To accomplish this, we combine two major public datasets:
+
+- **USGS (United States Geological Survey):** comprehensive global earthquake event data  
+- **NOAA/NCEI (National Centers for Environmental Information):** records of significant earthquakes with associated impact metrics such as deaths and estimated damage  
+
+By integrating these sources, the project provides a more complete view of how earthquake characteristics relate to real-world outcomes.
+
+---
+
+## Motivation
+
+Earthquakes are often described using physical metrics like magnitude and depth, but these alone do not fully explain their impact on human populations. Two earthquakes of similar magnitude can result in vastly different levels of damage depending on location, infrastructure, and preparedness.
+
+This project aims to explore:
+
+- how physical earthquake properties translate into human impact  
+- whether certain regions experience disproportionate outcomes  
+- how earthquake-related damage and deaths have evolved over time  
+
+Understanding these relationships provides insight into vulnerability, risk, and the limitations of available data.
+
+---
 
 ## Research Questions
 
-- Does higher magnitude lead to more deaths and damage?
-- Does depth influence earthquake impact?
-- Which regions appear most vulnerable?
-- How has earthquake impact changed over time?
+The analysis is structured around four primary research questions:
 
-## Dashboard
+1. **Magnitude vs. Impact**  
+   Do higher-magnitude earthquakes consistently result in greater deaths and economic damage?
 
-[Interactive Streamlit App](PUT_STREAMLIT_LINK_HERE)
+2. **Depth vs. Severity**  
+   Does the depth of an earthquake influence its potential to cause damage?
 
-## Repository
+3. **Regional Vulnerability**  
+   Which regions appear most affected by earthquakes, and are some disproportionately vulnerable relative to earthquake size?
 
-This project includes:
+4. **Trends Over Time**  
+   How have earthquake-related deaths and damages changed from 2000 to 2024?
 
-- data collection from public APIs
-- data wrangling and merging
-- exploratory analysis functions
-- an interactive Streamlit dashboard
-- project documentation and report
+---
+
+## Data Pipeline Overview
+
+The project follows a full data science pipeline:
+
+1. **Data Collection**  
+   - Fetch earthquake event data from the USGS API  
+   - Fetch significant earthquake impact data from NOAA/NCEI  
+
+2. **Data Integration**  
+   - Match events across datasets using time and geographic proximity  
+   - Resolve duplicates and inconsistencies  
+
+3. **Data Cleaning and Transformation**  
+   - Standardize variables such as magnitude, depth, and location  
+   - Handle missing values for deaths and damage  
+
+4. **Analysis and Aggregation**  
+   - Group events by magnitude bins and depth categories  
+   - Compute summary statistics (medians, totals, rolling averages)  
+
+5. **Visualization and Communication**  
+   - Interactive dashboard built with Streamlit  
+   - Documentation and report generated using Quarto  
+
+---
+
+## Interactive Dashboard
+
+The project includes a fully interactive Streamlit dashboard that allows users to explore the data and results dynamically.
+
+👉 [Launch the Streamlit App] (https://stat386earthquakeanalysis.streamlit.app/)
+
+The dashboard provides:
+
+- magnitude vs. impact comparisons  
+- depth-based summaries  
+- regional breakdowns of earthquake impact  
+- time-series visualizations of deaths and damage  
+
+---
+
+## Repository Structure
+
+The repository is organized as a Python package with modular components:
+
+- `earthquake_analysis/`  
+  - data collection (`fetch.py`)  
+  - data merging (`merge.py`)  
+  - data cleaning (`clean.py`)  
+  - analysis functions (`analyze.py`)  
+
+- `scripts/`  
+  - pipeline execution (`run_pipeline.py`)  
+
+- `app.py`  
+  - Streamlit dashboard  
+
+- `docs/`  
+  - Quarto documentation, tutorial, and final report  
+
+---
+
+## Key Takeaways
+
+This project highlights several important insights:
+
+- earthquake magnitude alone does not fully determine impact  
+- shallow earthquakes tend to be more damaging than deeper ones  
+- regional factors play a significant role in vulnerability  
+- data limitations and reporting differences affect conclusions  
+
+---
+
+## Further Reading
+
+- See the **Tutorial** page for instructions on running the pipeline and using the package  
+- See the **Final Report** for a detailed discussion of methods, results, and limitations  

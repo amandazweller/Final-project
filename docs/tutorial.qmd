@@ -2,21 +2,54 @@
 title: "Tutorial"
 ---
 
+## Overview
+
+This tutorial walks through how to install the package, run the full data pipeline, and reproduce the core analysis used in this project.
+
+The goal is to provide a clear, end-to-end workflow so that another user can generate the dataset and explore earthquake impact patterns independently.
+
+---
+
 ## Installation
 
-Clone the repository and install the package locally.
+First, clone the repository and install the package locally.
 
 ~~~bash
+git clone https://github.com/amandazweller/Final-project.git
+cd Final-project
 pip install -e .
 ~~~
 
-## Run the data pipeline
+This installs the `earthquake_analysis` package in editable mode, allowing you to use its functions directly.
+
+---
+
+## Running the Data Pipeline
+
+The full data pipeline collects, merges, and cleans the dataset.
 
 ~~~bash
 python scripts/run_pipeline.py
 ~~~
 
-## Example usage
+This script performs the following steps:
+
+1. Fetches earthquake event data from the USGS API  
+2. Fetches significant earthquake impact data from NOAA/NCEI  
+3. Matches events across datasets using time and geographic proximity  
+4. Cleans and standardizes the merged dataset  
+5. Outputs processed data files to the `data/` directory  
+
+After running, you should see files such as:
+
+- `data/cleaned.csv`  
+- `data/analysis_subset.csv`  
+
+---
+
+## Using the Package
+
+You can also run individual steps manually using the package functions.
 
 ~~~python
 from earthquake_analysis import (
@@ -27,22 +60,80 @@ from earthquake_analysis import (
     magnitude_vs_impact,
 )
 
+# Fetch raw data
 df_ncei = fetch_ncei(min_year=2010, max_year=2024)
 df_usgs = fetch_usgs("2010-01-01", "2024-12-31")
 
+# Merge datasets
 merged = merge_usgs_ncei(df_usgs, df_ncei)
+
+# Clean data
 cleaned = clean_merged(merged)
 
+# Run an example analysis
 result = magnitude_vs_impact(cleaned)
 print(result.head())
 ~~~
 
-## Launch the dashboard
+This modular structure allows you to:
+
+- inspect intermediate data  
+- modify matching criteria  
+- run custom analyses  
+
+---
+
+## Running the Dashboard
+
+To explore the results interactively, launch the Streamlit app:
 
 ~~~bash
 streamlit run app.py
 ~~~
 
-## Notes
+The dashboard provides:
 
-The project combines earthquake event data with impact-related data, then summarizes patterns by magnitude, depth, region, and year.
+- magnitude vs. impact comparisons  
+- depth-based summaries  
+- regional vulnerability visualizations  
+- time-series trends for deaths and damage  
+
+---
+
+## Reproducibility Notes
+
+- The pipeline depends on external APIs (USGS and NOAA/NCEI)  
+- Running the pipeline may take several minutes due to data retrieval  
+- Results may vary slightly over time as source data updates  
+
+---
+
+## Troubleshooting
+
+**Issue: Missing dataset when launching the app**  
+→ Run the pipeline first:
+~~~bash
+python scripts/run_pipeline.py
+~~~
+
+**Issue: Slow data retrieval**  
+→ This is expected when fetching large time ranges from the USGS API  
+
+**Issue: Import errors**  
+→ Ensure the package is installed using:
+~~~bash
+pip install -e .
+~~~
+
+---
+
+## Summary
+
+This tutorial demonstrates how to:
+
+- install and configure the project  
+- generate the dataset from raw sources  
+- run analysis functions  
+- launch the interactive dashboard  
+
+Together, these steps reproduce the full data science workflow used in the project.

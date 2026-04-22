@@ -4,54 +4,112 @@ title: "Final Report"
 
 ## Introduction
 
-This project examines global earthquake patterns and their real-world human impact from 2000 to 2024. The goal is to combine physical earthquake characteristics with human outcome measures such as deaths and property damage.
+Earthquakes are commonly characterized by physical properties such as magnitude and depth, yet these measures alone do not fully capture their real-world impact. Two earthquakes of similar magnitude can produce vastly different outcomes depending on location, infrastructure, and population vulnerability.
+
+This project examines global earthquake patterns and their associated human impact from 2000 to 2024. By integrating physical earthquake data with impact-focused records, the analysis seeks to better understand how earthquake characteristics translate into outcomes such as deaths and economic damage.
+
+---
 
 ## Data
 
-The analysis uses two public data sources:
+The analysis combines two primary public datasets:
 
-- USGS earthquake event data  
-- NOAA/NCEI significant earthquake data  
+- **USGS (United States Geological Survey):**  
+  Provides comprehensive global earthquake event data, including magnitude, depth, location, and time.
 
-USGS provides broad earthquake event coverage, while NCEI provides impact-related information such as deaths and estimated damage.
+- **NOAA/NCEI (National Centers for Environmental Information):**  
+  Provides records of significant earthquakes, including estimated deaths, injuries, and economic damage.
+
+The USGS dataset offers broad coverage of earthquake events, while the NCEI dataset focuses on events with notable human or economic impact. Combining these datasets enables analysis of both physical and outcome-based variables.
+
+---
 
 ## Methods
 
-The two datasets were combined by approximate event matching. Earthquakes were matched within a limited time and geographic window, then the closest magnitude match was selected.
+### Data Collection
 
-After merging and cleaning, the project analyzed four main questions:
+Data were retrieved programmatically from the USGS and NCEI sources using API requests. The datasets differ in structure and coverage, requiring alignment before analysis.
 
-1. whether larger earthquakes tend to produce greater deaths and damage  
-2. whether focal depth is associated with severity  
-3. which regions appear disproportionately vulnerable  
-4. how earthquake-related deaths and damage have changed over time  
+### Data Integration
 
-Summary tables and visualizations were generated to compare patterns across magnitude groups, depth categories, regions, and years.
+Because the two datasets do not share a common event identifier, earthquakes were matched using an approximate method based on:
+
+- temporal proximity (within a limited number of days)  
+- geographic proximity (within a latitude/longitude window)  
+- similarity in magnitude  
+
+When multiple candidate matches were available, the closest match based on magnitude was selected.
+
+### Data Cleaning and Transformation
+
+After merging, the dataset was cleaned and standardized:
+
+- missing or invalid values were handled or removed where appropriate  
+- magnitude values were grouped into bins for comparison  
+- depth values were categorized (e.g., shallow vs. deep)  
+- damage values were normalized where possible  
+
+A filtered subset of the data was created for analysis, focusing on observations with sufficient information for deaths, magnitude, and damage.
+
+### Analytical Approach
+
+The analysis focuses on four primary questions:
+
+1. the relationship between earthquake magnitude and human impact  
+2. the role of depth in determining severity  
+3. regional differences in earthquake outcomes  
+4. temporal trends in deaths and economic damage  
+
+Summary statistics such as medians, totals, and rolling averages were computed to identify patterns. Results were visualized using bar charts and time-series plots.
+
+---
 
 ## Results
 
-### Magnitude and impact
+### Magnitude and Impact
 
-Higher-magnitude earthquakes generally correspond to higher deaths and higher damage, although the relationship is not perfectly uniform.
+The analysis shows a clear positive relationship between earthquake magnitude and both deaths and economic damage. Larger earthquakes tend to produce more severe outcomes, although variability within each magnitude range indicates that magnitude alone does not fully explain impact.
 
-### Depth and severity
+### Depth and Severity
 
-Shallower earthquakes tend to be associated with greater human impact than deeper events.
+Shallower earthquakes are generally associated with higher levels of damage and fatalities compared to deeper earthquakes. This is consistent with the physical mechanism of ground shaking, which is typically more intense closer to the surface.
 
-### Regional vulnerability
+### Regional Vulnerability
 
-Some regions appear to experience disproportionately high deaths relative to earthquake size, suggesting differences in vulnerability, preparedness, infrastructure, or reporting.
+Significant differences in earthquake impact are observed across regions. Some regions exhibit disproportionately high deaths relative to earthquake magnitude, suggesting differences in infrastructure quality, population density, preparedness, and reporting practices.
 
-### Trends over time
+### Trends Over Time
 
-Annual totals for deaths and damage vary substantially across years. Rolling averages help smooth short-term volatility and highlight broader patterns over time.
+Annual totals for deaths and damage fluctuate substantially over the study period. Short-term variability is high, but rolling averages provide a clearer view of broader trends. The results suggest that extreme events drive much of the variation rather than steady long-term changes.
+
+---
+
+## Discussion
+
+The findings highlight that earthquake impact is influenced by a combination of physical and contextual factors. While magnitude and depth are important predictors, regional characteristics play a critical role in determining outcomes.
+
+The variability observed within magnitude categories suggests that preparedness, building standards, and response capacity significantly influence the severity of earthquake consequences. Additionally, the concentration of high-impact events in certain regions underscores the importance of local vulnerability.
+
+---
 
 ## Limitations
 
-This project has several limitations.
+Several limitations should be considered when interpreting the results.
 
-First, the merge between datasets is approximate rather than exact. Second, some impact variables contain missing values. Third, reporting quality likely varies across regions and years. Finally, the project is descriptive and should not be interpreted as establishing causal relationships.
+First, the integration of datasets relies on approximate matching rather than exact identifiers. This introduces potential for mismatches or missed matches, particularly in regions with frequent seismic activity.
+
+Second, the NCEI dataset includes missing or incomplete values for key variables such as deaths and economic damage. This limits the completeness of the analysis.
+
+Third, reporting quality and data availability vary across countries and over time, introducing potential bias in observed patterns.
+
+Finally, the analysis is descriptive and does not establish causal relationships between earthquake characteristics and outcomes.
+
+---
 
 ## Conclusion
 
-Earthquake impact depends on more than just event magnitude. Depth, region, and broader vulnerability patterns also matter. The results provide a descriptive picture of earthquake risk and impact, while also highlighting the importance of data quality and matching assumptions.
+This project demonstrates that while earthquake magnitude is strongly associated with human impact, it is not the sole determinant. Depth, geographic location, and regional vulnerability all contribute to the severity of outcomes.
+
+The results emphasize the importance of considering both physical and contextual factors when assessing earthquake risk. They also highlight the limitations of available data and the challenges of integrating multiple sources.
+
+Overall, the project provides a comprehensive descriptive analysis of global earthquake patterns and their real-world consequences, while laying the groundwork for more detailed future investigation.

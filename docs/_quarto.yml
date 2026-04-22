@@ -3,6 +3,7 @@ project:
 
 website:
   title: "Earthquake Analysis"
+  description: "A data science project analyzing global earthquake patterns and real-world human impact from 2000 to 2024 using USGS and NOAA/NCEI data."
   navbar:
     left:
       - href: index.qmd
@@ -10,9 +11,22 @@ website:
       - href: tutorial.qmd
         text: Tutorial
       - href: report.qmd
-        text: Report
+        text: Final Report
+    right:
+      - icon: github
+        href: https://github.com/PUT-YOUR-USERNAME/Final-project
+        aria-label: GitHub Repository
+  search: true
+  page-footer:
+    left: "STAT 386 Final Project"
+    right: "Built with Quarto"
 
 format:
   html:
     theme: cosmo
     toc: true
+    toc-depth: 3
+    number-sections: true
+    code-copy: true
+    code-overflow: wrap
+    smooth-scroll: true
