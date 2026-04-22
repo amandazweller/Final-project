@@ -9,6 +9,8 @@ website:
     left:
       - href: index.qmd
         text: Home
+      - href: reference.qmd
+        text: Documentation
       - href: tutorial.qmd
         text: Tutorial
       - href: report.qmd

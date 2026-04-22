@@ -123,5 +123,6 @@ This project highlights several important insights:
 
 ## Further Reading
 
+- See the **Documentation** page for a full function reference including arguments, return types, and usage examples
 - See the **Tutorial** page for instructions on running the pipeline and using the package  
 - See the **Final Report** for a detailed discussion of methods, results, and limitations  

@@ -1,0 +1,345 @@
+---
+title: "Package Documentation"
+---
+
+This page documents every public function in the `earthquake_analysis` package.
+All functions are importable directly from the package:
+
+```python
+from earthquake_analysis import fetch_ncei, fetch_usgs, merge_usgs_ncei, \
+    clean_merged, make_analysis_subset, magnitude_vs_impact, deadly_threshold, \
+    depth_vs_impact, regional_impact, vulnerability_index, yearly_trends, rolling_average
+```
+
+---
+
+## `fetch.py` — Data Collection
+
+### `fetch_ncei`
+
+Fetches all NOAA/NCEI significant earthquake records for a given year range,
+paginating through the HazEL API automatically (25 records per page). Builds a
+UTC `time` column from the separate year/month/day fields returned by the API.
+
+**Arguments**
+
+| Argument | Type | Default | Description |
+|---|---|---|---|
+| `min_year` | `int` | — | First year to fetch (inclusive) |
+| `max_year` | `int` | — | Last year to fetch (inclusive) |
+| `min_magnitude` | `float` | `0` | Minimum magnitude filter; `0` returns all events |
+
+**Returns** `pd.DataFrame` — one row per significant earthquake with impact
+columns: `deaths`, `injuries`, `damageMillionsDollars`, `housesDestroyed`, etc.
+
+```python
+from earthquake_analysis import fetch_ncei
+
+df_ncei = fetch_ncei(min_year=2000, max_year=2024)
+print(df_ncei.shape)   # (~5700, 40+)
+```
+
+---
+
+### `fetch_usgs`
+
+Fetches USGS earthquake events between two ISO date strings. Splits the date
+range into monthly chunks to stay under the API's 20,000-row-per-request limit.
+Deduplicates on `usgs_id` before returning.
+
+**Arguments**
+
+| Argument | Type | Default | Description |
+|---|---|---|---|
+| `start_date` | `str` | — | ISO date string, e.g. `"2000-01-01"` |
+| `end_date` | `str` | — | ISO date string, e.g. `"2024-12-31"` |
+| `min_magnitude` | `float` | `0` | Minimum magnitude filter |
+| `chunk_months` | `int` | `1` | Months per API request (increase to reduce request count for sparse periods) |
+
+**Returns** `pd.DataFrame` — one row per event with columns: `usgs_id`, `time`,
+`latitude`, `longitude`, `depth`, `magnitude`, `place`, `sig`, `mmi`, `alert`.
+
+```python
+from earthquake_analysis import fetch_usgs
+
+df_usgs = fetch_usgs("2000-01-01", "2024-12-31", min_magnitude=4.5)
+print(df_usgs.shape)   # large — up to several hundred thousand rows
+```
+
+---
+
+## `merge.py` — Matching the Two Sources
+
+### `merge_usgs_ncei`
+
+Left-joins NCEI significant earthquakes onto USGS events using an
+approximate-match strategy:
+
+1. **Time window** — USGS event must be within ±`time_tolerance_days` of the NCEI record.
+2. **Spatial box** — USGS event must be within ±`coord_tolerance_deg` degrees of lat/lon.
+3. **Tiebreaker** — of remaining candidates, the one with the closest magnitude wins.
+
+USGS is the source of truth for physics (magnitude, depth, location). NCEI enriches
+matched rows with human-impact data. Unmatched NCEI rows are silently dropped.
+
+**Arguments**
+
+| Argument | Type | Default | Description |
+|---|---|---|---|
+| `df_usgs` | `pd.DataFrame` | — | Output of `fetch_usgs` |
+| `df_ncei` | `pd.DataFrame` | — | Output of `fetch_ncei` |
+| `time_tolerance_days` | `int` | `3` | Half-width of the time matching window in days |
+| `coord_tolerance_deg` | `float` | `1.0` | Half-width of the lat/lon matching box in degrees (~111 km) |
+
+**Returns** `pd.DataFrame` — matched rows with all USGS columns prefixed `usgs_`
+and all NCEI columns prefixed `ncei_`.
+
+```python
+from earthquake_analysis import merge_usgs_ncei
+
+merged = merge_usgs_ncei(df_usgs, df_ncei)
+# Merged: 1392 / 5712 NCEI records matched (24.4%)
+```
+
+---
+
+## `clean.py` — Cleaning & Subsetting
+
+### `clean_merged`
+
+Cleans the merged DataFrame and produces a well-structured dataset ready for
+exploratory analysis. All columns are renamed to consistent snake_case names.
+
+**Steps performed:**
+
+1. Coerce impact and physics columns to numeric.
+2. Drop duplicate USGS events (one USGS quake matched to multiple NCEI records).
+3. Drop rows with no usable magnitude.
+4. Drop rows missing timestamp or lat/lon — cannot be placed in time or space.
+5. Add a `magnitude` convenience column (USGS value, NCEI fallback).
+6. Add a `year` column from the USGS timestamp.
+7. Add a `depth_category` column (`shallow` / `intermediate` / `deep`).
+8. Add a `region` column parsed from the NCEI location name.
+9. Drop NCEI columns that duplicate USGS data (time, lat/lon, depth, date parts).
+10. Rename all remaining columns to clean snake_case names.
+
+**Arguments**
+
+| Argument | Type | Description |
+|---|---|---|
+| `df` | `pd.DataFrame` | Output of `merge_usgs_ncei` |
+
+**Returns** `pd.DataFrame` — full cleaned dataset.
+
+```python
+from earthquake_analysis import clean_merged
+
+cleaned = clean_merged(merged)
+# Dropped 0 duplicate USGS matches
+# Kept 1392 rows with a valid magnitude
+# Dropped 43 rows missing time or location
+```
+
+---
+
+### `make_analysis_subset`
+
+Produces the analysis-ready subset used by the Streamlit app. Filters the full
+cleaned DataFrame to rows where the three core analysis columns are all present,
+then removes any column that is more than 80% null.
+
+**Arguments**
+
+| Argument | Type | Description |
+|---|---|---|
+| `df` | `pd.DataFrame` | Output of `clean_merged` |
+
+**Returns** `pd.DataFrame` — subset with complete `deaths`, `magnitude`, and
+`damage_order` values; sparse columns removed.
+
+```python
+from earthquake_analysis import make_analysis_subset
+
+subset = make_analysis_subset(cleaned)
+# Analysis subset: 561 rows (40.3% of cleaned data), 28 columns (12 dropped for >80% null)
+```
+
+---
+
+## `analyze.py` — Research Questions
+
+All analysis functions accept the output of `make_analysis_subset` (or any
+cleaned DataFrame with the expected columns) and return a summary DataFrame
+that can be plotted directly.
+
+### `magnitude_vs_impact`
+
+Bins earthquakes by 0.5-magnitude intervals and computes median deaths, median
+damage order, and event count per bin. Also computes the percentage of events
+in each bin that caused at least one death.
+
+**Arguments**
+
+| Argument | Type | Description |
+|---|---|---|
+| `df` | `pd.DataFrame` | Analysis-ready DataFrame |
+
+**Returns** `pd.DataFrame` with columns: `mag_bin`, `median_deaths`,
+`median_damage_order`, `total_events`, `total_deaths`, `pct_with_deaths`.
+
+```python
+from earthquake_analysis import magnitude_vs_impact
+
+q1 = magnitude_vs_impact(subset)
+print(q1[["mag_bin", "median_deaths", "total_events"]])
+```
+
+---
+
+### `deadly_threshold`
+
+Returns the magnitude at which 50% or more of earthquakes with recorded impact
+data caused at least `death_cutoff` deaths.
+
+**Arguments**
+
+| Argument | Type | Default | Description |
+|---|---|---|---|
+| `df` | `pd.DataFrame` | — | Analysis-ready DataFrame |
+| `death_cutoff` | `int` | `10` | Minimum deaths to count as "deadly" |
+
+**Returns** `float` — the left edge of the first magnitude bin exceeding the
+threshold, or `None` if no bin qualifies.
+
+```python
+from earthquake_analysis import deadly_threshold
+
+threshold = deadly_threshold(subset, death_cutoff=10)
+print(f"Deadly threshold: M{threshold}")
+```
+
+---
+
+### `depth_vs_impact`
+
+Compares median deaths and damage across depth categories for M5+ earthquakes,
+controlling for the fact that larger earthquakes cause more damage regardless
+of depth.
+
+Depth categories: `shallow` (< 30 km), `intermediate` (30–150 km), `deep` (> 150 km).
+
+**Arguments**
+
+| Argument | Type | Description |
+|---|---|---|
+| `df` | `pd.DataFrame` | Analysis-ready DataFrame |
+
+**Returns** `pd.DataFrame` with one row per depth category and columns:
+`depth_category`, `median_deaths`, `median_damage_millions`, `total_events`.
+
+```python
+from earthquake_analysis import depth_vs_impact
+
+q2 = depth_vs_impact(subset)
+print(q2)
+```
+
+---
+
+### `regional_impact`
+
+Aggregates total deaths, total damage, and event count by region. Also computes
+`deaths_per_event` and `damage_per_event` as simple vulnerability proxies.
+
+**Arguments**
+
+| Argument | Type | Default | Description |
+|---|---|---|---|
+| `df` | `pd.DataFrame` | — | Analysis-ready DataFrame |
+| `top_n` | `int` | `20` | Number of regions to return, ranked by total deaths |
+
+**Returns** `pd.DataFrame` with columns: `region`, `total_deaths`,
+`total_damage_millions`, `total_events`, `median_magnitude`,
+`deaths_per_event`, `damage_per_event`.
+
+```python
+from earthquake_analysis import regional_impact
+
+q3 = regional_impact(subset, top_n=15)
+print(q3[["region", "total_deaths", "deaths_per_event"]])
+```
+
+---
+
+### `vulnerability_index`
+
+Identifies regions that suffer disproportionately high deaths relative to the
+typical size of earthquakes they experience.
+
+`vulnerability_score = deaths_per_event / median_magnitude`
+
+A high score means a region suffers many deaths even from moderate-sized quakes —
+often a signal of poor infrastructure or high population density near fault zones.
+
+**Arguments**
+
+| Argument | Type | Default | Description |
+|---|---|---|---|
+| `df` | `pd.DataFrame` | — | Analysis-ready DataFrame |
+| `min_events` | `int` | `5` | Minimum number of events required for a region to be included |
+
+**Returns** `pd.DataFrame` sorted by `vulnerability_score` descending.
+
+```python
+from earthquake_analysis import vulnerability_index
+
+vi = vulnerability_index(subset, min_events=3)
+print(vi[["region", "vulnerability_score"]].head(10))
+```
+
+---
+
+### `yearly_trends`
+
+Aggregates deaths, damage, and event count by year. Requires a `year` column —
+produced automatically by `clean_merged`.
+
+**Arguments**
+
+| Argument | Type | Description |
+|---|---|---|
+| `df` | `pd.DataFrame` | Analysis-ready DataFrame with a `year` column |
+
+**Returns** `pd.DataFrame` with one row per year and columns: `year`,
+`total_deaths`, `total_damage_millions`, `total_events`, `median_magnitude`.
+
+```python
+from earthquake_analysis import yearly_trends
+
+q4 = yearly_trends(subset)
+print(q4.tail())
+```
+
+---
+
+### `rolling_average`
+
+Adds rolling-mean columns to the output of `yearly_trends`. Uses a centred
+window so the smoothed line is aligned with the bars in the trend charts.
+
+**Arguments**
+
+| Argument | Type | Default | Description |
+|---|---|---|---|
+| `yearly_df` | `pd.DataFrame` | — | Output of `yearly_trends` |
+| `window` | `int` | `5` | Rolling window size in years |
+
+**Returns** `pd.DataFrame` — input with two additional columns: `deaths_rolling`,
+`damage_rolling`.
+
+```python
+from earthquake_analysis import yearly_trends, rolling_average
+
+q4 = rolling_average(yearly_trends(subset), window=5)
+print(q4[["year", "total_deaths", "deaths_rolling"]])
+```

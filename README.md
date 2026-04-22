@@ -134,5 +134,6 @@ __pycache__/
 ```
 
 ## Read More
-- Read More about our project on our [Git Hub Pages Site](https://amandazweller.github.io/Final-project/)
-- See the [**Final Report**](https://amandazweller.github.io/Final-project/report.html) for a detailed discussion of methods, results, and limitations 
+- [GitHub Pages Site](https://amandazweller.github.io/Final-project/)
+- [Tutorial](https://amandazweller.github.io/Final-project/tutorial.html)
+- [Final Report](https://amandazweller.github.io/Final-project/report.html)

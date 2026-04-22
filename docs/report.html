@@ -95,6 +95,10 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./reference.html"> 
+<span class="menu-text">Documentation</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./tutorial.html"> 
 <span class="menu-text">Tutorial</span></a>
   </li>  
@@ -171,8 +175,16 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="introduction" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">1</span> Introduction</h2>
-<p>Earthquakes are commonly characterized by physical properties such as magnitude and depth, yet these measures alone do not fully capture their real-world impact. Two earthquakes of similar magnitude can produce vastly different outcomes depending on location, infrastructure, and population vulnerability.</p>
-<p>This project examines global earthquake patterns and their associated human impact from 2000 to 2024. By integrating physical earthquake data with impact-focused records, the analysis seeks to better understand how earthquake characteristics translate into outcomes such as deaths and economic damage.</p>
+<p>Earthquakes are commonly characterized by physical properties such as magnitude and depth, yet these measures alone do not fully capture their real-world impact. Two earthquakes of similar magnitude can produce vastly different outcomes depending on location, infrastructure, and population vulnerability. A magnitude 7.0 earthquake beneath a densely populated city with poor building standards can be catastrophic, while a similar event in a sparsely populated or well-prepared region may cause comparatively little harm.</p>
+<p>This disconnect between physical size and human consequence is the central motivation for this project. Rather than treating earthquakes purely as geophysical events, this analysis asks: <strong>what actually determines how deadly and destructive an earthquake becomes?</strong> By integrating physical earthquake data from the USGS with impact records from NOAA/NCEI, the project examines how earthquake characteristics translate into outcomes such as deaths and economic damage across 25 years of global seismic activity.</p>
+<p>The analysis is structured around four primary research questions:</p>
+<ol type="1">
+<li><strong>Magnitude vs.&nbsp;Impact</strong> — Do higher-magnitude earthquakes consistently result in greater deaths and economic damage, and is there a threshold above which earthquakes become truly catastrophic?</li>
+<li><strong>Depth vs.&nbsp;Severity</strong> — Does the focal depth of an earthquake influence its potential to cause damage and fatalities?</li>
+<li><strong>Regional Vulnerability</strong> — Which regions are most affected by earthquakes, and are some areas disproportionately vulnerable relative to earthquake size?</li>
+<li><strong>Trends Over Time</strong> — How have earthquake-related deaths and property damage changed from 2000 to 2024?</li>
+</ol>
+<p>Together these questions move beyond physical description toward a more complete understanding of earthquake risk — one that accounts for the human and contextual factors that physical metrics alone cannot capture.</p>
 <hr>
 </section>
 <section id="data" class="level2" data-number="2">
@@ -240,18 +252,52 @@ Provides records of significant earthquakes, including estimated deaths, injurie
 <section id="magnitude-and-impact" class="level3" data-number="4.1">
 <h3 data-number="4.1" class="anchored" data-anchor-id="magnitude-and-impact"><span class="header-section-number">4.1</span> Magnitude and Impact</h3>
 <p>The analysis shows a clear positive relationship between earthquake magnitude and both deaths and economic damage. Larger earthquakes tend to produce more severe outcomes, although variability within each magnitude range indicates that magnitude alone does not fully explain impact.</p>
+<p>Median deaths remain near zero across all bins below M8.0, then jump sharply, to around 400 at M8.0–8.5 and over 1,200 at M8.5–9.0, suggesting that truly catastrophic death tolls are concentrated in the largest events. Damage severity follows a smoother climb, rising from a median order of 2 below M5.5 to 3 at M5.5–6.5, and plateauing at the maximum value of 4 above M6.5. This indicates that while deaths are driven by a small number of extreme events, significant property damage becomes the norm at moderately large magnitudes.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/Deathandmagnitude.png" class="img-fluid figure-img"></p>
+<figcaption>Median deaths spike sharply above M8.0, while damage severity reaches its maximum and plateaus above M6.5.</figcaption>
+</figure>
+</div>
 </section>
 <section id="depth-and-severity" class="level3" data-number="4.2">
 <h3 data-number="4.2" class="anchored" data-anchor-id="depth-and-severity"><span class="header-section-number">4.2</span> Depth and Severity</h3>
 <p>Shallower earthquakes are generally associated with higher levels of damage and fatalities compared to deeper earthquakes. This is consistent with the physical mechanism of ground shaking, which is typically more intense closer to the surface.</p>
+<p>Among M5+ events, shallow earthquakes have a median death toll of 4, compared to 2 for intermediate-depth events. Deep earthquakes show a median of 5, though this figure comes from very few events — fewer than 15 deep earthquakes appear in the dataset compared to roughly 115 intermediate and 340 shallow — making it unreliable as a general pattern. The dominance of shallow earthquakes in the record reinforces that depth shapes both the physical intensity of shaking and the likelihood that an event reaches the threshold of human significance.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/depthdamage.png" class="img-fluid figure-img"></p>
+<figcaption>Shallow earthquakes dominate the dataset and show higher median deaths than intermediate-depth events; deep events are too rare to draw firm conclusions.</figcaption>
+</figure>
+</div>
 </section>
 <section id="regional-vulnerability" class="level3" data-number="4.3">
 <h3 data-number="4.3" class="anchored" data-anchor-id="regional-vulnerability"><span class="header-section-number">4.3</span> Regional Vulnerability</h3>
-<p>Significant differences in earthquake impact are observed across regions. Some regions exhibit disproportionately high deaths relative to earthquake magnitude, suggesting differences in infrastructure quality, population density, preparedness, and reporting practices.</p>
+<p>Significant differences in earthquake impact are observed across regions. Some regions exhibit disproportionately high deaths relative to earthquake magnitude, suggesting differences in infrastructure quality, population density, preparedness, and reporting practices.Haiti: Port-au-Prince leads all regions by a wide margin with over 300,000 total deaths, driven primarily by the 2010 earthquake. China: Sichuan Province and Baramula follow at roughly 80,000 each, with Turkey: Kahramanmaras; Syria close behind.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/regions.png" class="img-fluid figure-img"></p>
+<figcaption>Haiti: Port-au-Prince accounts for more total deaths than the next four regions combined.</figcaption>
+</figure>
+</div>
+<p>The vulnerability index (which measures deaths per event relative to median magnitude) tells a different story about underlying risk. China: Sichuan Province scores over 2,000, far exceeding all other regions, meaning it experiences disproportionately high fatalities even after accounting for earthquake size. Afghanistan: Herat is the only other region with a meaningfully elevated score, while all remaining regions cluster near zero. This points to factors beyond magnitude (such as building construction, population density, and emergency response capacity) as critical determinants of earthquake outcomes.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/vulnerability.png" class="img-fluid figure-img"></p>
+<figcaption>China: Sichuan Province has a vulnerability score roughly ten times higher than the next closest region.</figcaption>
+</figure>
+</div>
 </section>
 <section id="trends-over-time" class="level3" data-number="4.4">
 <h3 data-number="4.4" class="anchored" data-anchor-id="trends-over-time"><span class="header-section-number">4.4</span> Trends Over Time</h3>
 <p>Annual totals for deaths and damage fluctuate substantially over the study period. Short-term variability is high, but rolling averages provide a clearer view of broader trends. The results suggest that extreme events drive much of the variation rather than steady long-term changes.</p>
+<p>Deaths spike dramatically in 2010 to over 300,000 — almost entirely attributable to the Haiti earthquake — before the 5-year rolling mean drops sharply and remains low through the mid-2010s, with a modest uptick in the early 2020s. Property damage peaks around 2008 at roughly $85 billion, driven by the Sichuan earthquake, and again in 2024 at around $52 billion. Outside of these extreme events, both deaths and damage remain relatively stable across the 25-year window, with no clear upward or downward trend in the rolling means.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/deathsanddamage.png" class="img-fluid figure-img"></p>
+<figcaption>Both deaths and property damage are dominated by a small number of extreme events; the 5-year rolling means show no sustained long-term trend.</figcaption>
+</figure>
+</div>
 <hr>
 </section>
 </section>
