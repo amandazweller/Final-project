@@ -135,5 +135,6 @@ __pycache__/
 
 ## Read More
 - [GitHub Pages Site](https://amandazweller.github.io/Final-project/)
+- [Documentation](https://amandazweller.github.io/Final-project/reference.html)
 - [Tutorial](https://amandazweller.github.io/Final-project/tutorial.html)
 - [Final Report](https://amandazweller.github.io/Final-project/report.html)
