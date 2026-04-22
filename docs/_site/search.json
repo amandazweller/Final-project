@@ -1,0 +1,184 @@
+[
+  {
+    "objectID": "report.html",
+    "href": "report.html",
+    "title": "Final Report",
+    "section": "",
+    "text": "Earthquakes are commonly characterized by physical properties such as magnitude and depth, yet these measures alone do not fully capture their real-world impact. Two earthquakes of similar magnitude can produce vastly different outcomes depending on location, infrastructure, and population vulnerability.\nThis project examines global earthquake patterns and their associated human impact from 2000 to 2024. By integrating physical earthquake data with impact-focused records, the analysis seeks to better understand how earthquake characteristics translate into outcomes such as deaths and economic damage."
+  },
+  {
+    "objectID": "report.html#introduction",
+    "href": "report.html#introduction",
+    "title": "Final Report",
+    "section": "",
+    "text": "Earthquakes are commonly characterized by physical properties such as magnitude and depth, yet these measures alone do not fully capture their real-world impact. Two earthquakes of similar magnitude can produce vastly different outcomes depending on location, infrastructure, and population vulnerability.\nThis project examines global earthquake patterns and their associated human impact from 2000 to 2024. By integrating physical earthquake data with impact-focused records, the analysis seeks to better understand how earthquake characteristics translate into outcomes such as deaths and economic damage."
+  },
+  {
+    "objectID": "report.html#data",
+    "href": "report.html#data",
+    "title": "Final Report",
+    "section": "2 Data",
+    "text": "2 Data\nThe analysis combines two primary public datasets:\n\nUSGS (United States Geological Survey):\nProvides comprehensive global earthquake event data, including magnitude, depth, location, and time.\nNOAA/NCEI (National Centers for Environmental Information):\nProvides records of significant earthquakes, including estimated deaths, injuries, and economic damage.\n\nThe USGS dataset offers broad coverage of earthquake events, while the NCEI dataset focuses on events with notable human or economic impact. Combining these datasets enables analysis of both physical and outcome-based variables."
+  },
+  {
+    "objectID": "report.html#methods",
+    "href": "report.html#methods",
+    "title": "Final Report",
+    "section": "3 Methods",
+    "text": "3 Methods\n\n3.1 Data Collection\nData were retrieved programmatically from the USGS and NCEI sources using API requests. The datasets differ in structure and coverage, requiring alignment before analysis.\n\n\n3.2 Data Integration\nBecause the two datasets do not share a common event identifier, earthquakes were matched using an approximate method based on:\n\ntemporal proximity (within a limited number of days)\n\ngeographic proximity (within a latitude/longitude window)\n\nsimilarity in magnitude\n\nWhen multiple candidate matches were available, the closest match based on magnitude was selected.\n\n\n3.3 Data Cleaning and Transformation\nAfter merging, the dataset was cleaned and standardized:\n\nmissing or invalid values were handled or removed where appropriate\n\nmagnitude values were grouped into bins for comparison\n\ndepth values were categorized (e.g., shallow vs. deep)\n\ndamage values were normalized where possible\n\nA filtered subset of the data was created for analysis, focusing on observations with sufficient information for deaths, magnitude, and damage.\n\n\n3.4 Analytical Approach\nThe analysis focuses on four primary questions:\n\nthe relationship between earthquake magnitude and human impact\n\nthe role of depth in determining severity\n\nregional differences in earthquake outcomes\n\ntemporal trends in deaths and economic damage\n\nSummary statistics such as medians, totals, and rolling averages were computed to identify patterns. Results were visualized using bar charts and time-series plots."
+  },
+  {
+    "objectID": "report.html#results",
+    "href": "report.html#results",
+    "title": "Final Report",
+    "section": "4 Results",
+    "text": "4 Results\n\n4.1 Magnitude and Impact\nThe analysis shows a clear positive relationship between earthquake magnitude and both deaths and economic damage. Larger earthquakes tend to produce more severe outcomes, although variability within each magnitude range indicates that magnitude alone does not fully explain impact.\n\n\n4.2 Depth and Severity\nShallower earthquakes are generally associated with higher levels of damage and fatalities compared to deeper earthquakes. This is consistent with the physical mechanism of ground shaking, which is typically more intense closer to the surface.\n\n\n4.3 Regional Vulnerability\nSignificant differences in earthquake impact are observed across regions. Some regions exhibit disproportionately high deaths relative to earthquake magnitude, suggesting differences in infrastructure quality, population density, preparedness, and reporting practices.\n\n\n4.4 Trends Over Time\nAnnual totals for deaths and damage fluctuate substantially over the study period. Short-term variability is high, but rolling averages provide a clearer view of broader trends. The results suggest that extreme events drive much of the variation rather than steady long-term changes."
+  },
+  {
+    "objectID": "report.html#discussion",
+    "href": "report.html#discussion",
+    "title": "Final Report",
+    "section": "5 Discussion",
+    "text": "5 Discussion\nThe findings highlight that earthquake impact is influenced by a combination of physical and contextual factors. While magnitude and depth are important predictors, regional characteristics play a critical role in determining outcomes.\nThe variability observed within magnitude categories suggests that preparedness, building standards, and response capacity significantly influence the severity of earthquake consequences. Additionally, the concentration of high-impact events in certain regions underscores the importance of local vulnerability."
+  },
+  {
+    "objectID": "report.html#limitations",
+    "href": "report.html#limitations",
+    "title": "Final Report",
+    "section": "6 Limitations",
+    "text": "6 Limitations\nSeveral limitations should be considered when interpreting the results.\nFirst, the integration of datasets relies on approximate matching rather than exact identifiers. This introduces potential for mismatches or missed matches, particularly in regions with frequent seismic activity.\nSecond, the NCEI dataset includes missing or incomplete values for key variables such as deaths and economic damage. This limits the completeness of the analysis.\nThird, reporting quality and data availability vary across countries and over time, introducing potential bias in observed patterns.\nFinally, the analysis is descriptive and does not establish causal relationships between earthquake characteristics and outcomes."
+  },
+  {
+    "objectID": "report.html#conclusion",
+    "href": "report.html#conclusion",
+    "title": "Final Report",
+    "section": "7 Conclusion",
+    "text": "7 Conclusion\nThis project demonstrates that while earthquake magnitude is strongly associated with human impact, it is not the sole determinant. Depth, geographic location, and regional vulnerability all contribute to the severity of outcomes.\nThe results emphasize the importance of considering both physical and contextual factors when assessing earthquake risk. They also highlight the limitations of available data and the challenges of integrating multiple sources.\nOverall, the project provides a comprehensive descriptive analysis of global earthquake patterns and their real-world consequences, while laying the groundwork for more detailed future investigation."
+  },
+  {
+    "objectID": "tutorial.html",
+    "href": "tutorial.html",
+    "title": "Tutorial",
+    "section": "",
+    "text": "This tutorial walks through how to install the package, run the full data pipeline, and reproduce the core analysis used in this project.\nThe goal is to provide a clear, end-to-end workflow so that another user can generate the dataset and explore earthquake impact patterns independently."
+  },
+  {
+    "objectID": "tutorial.html#overview",
+    "href": "tutorial.html#overview",
+    "title": "Tutorial",
+    "section": "",
+    "text": "This tutorial walks through how to install the package, run the full data pipeline, and reproduce the core analysis used in this project.\nThe goal is to provide a clear, end-to-end workflow so that another user can generate the dataset and explore earthquake impact patterns independently."
+  },
+  {
+    "objectID": "tutorial.html#installation",
+    "href": "tutorial.html#installation",
+    "title": "Tutorial",
+    "section": "2 Installation",
+    "text": "2 Installation\nFirst, clone the repository and install the package locally.\ngit clone https://github.com/amandazweller/Final-project.git\ncd Final-project\npip install -e .\nThis installs the earthquake_analysis package in editable mode, allowing you to use its functions directly."
+  },
+  {
+    "objectID": "tutorial.html#running-the-data-pipeline",
+    "href": "tutorial.html#running-the-data-pipeline",
+    "title": "Tutorial",
+    "section": "3 Running the Data Pipeline",
+    "text": "3 Running the Data Pipeline\nThe full data pipeline collects, merges, and cleans the dataset.\npython scripts/run_pipeline.py\nThis script performs the following steps:\n\nFetches earthquake event data from the USGS API\n\nFetches significant earthquake impact data from NOAA/NCEI\n\nMatches events across datasets using time and geographic proximity\n\nCleans and standardizes the merged dataset\n\nOutputs processed data files to the data/ directory\n\nAfter running, you should see files such as:\n\ndata/cleaned.csv\n\ndata/analysis_subset.csv"
+  },
+  {
+    "objectID": "tutorial.html#using-the-package",
+    "href": "tutorial.html#using-the-package",
+    "title": "Tutorial",
+    "section": "4 Using the Package",
+    "text": "4 Using the Package\nYou can also run individual steps manually using the package functions.\nfrom earthquake_analysis import (\n    fetch_ncei,\n    fetch_usgs,\n    merge_usgs_ncei,\n    clean_merged,\n    magnitude_vs_impact,\n)\n\n# Fetch raw data\ndf_ncei = fetch_ncei(min_year=2010, max_year=2024)\ndf_usgs = fetch_usgs(\"2010-01-01\", \"2024-12-31\")\n\n# Merge datasets\nmerged = merge_usgs_ncei(df_usgs, df_ncei)\n\n# Clean data\ncleaned = clean_merged(merged)\n\n# Run an example analysis\nresult = magnitude_vs_impact(cleaned)\nprint(result.head())\nThis modular structure allows you to:\n\ninspect intermediate data\n\nmodify matching criteria\n\nrun custom analyses"
+  },
+  {
+    "objectID": "tutorial.html#running-the-dashboard",
+    "href": "tutorial.html#running-the-dashboard",
+    "title": "Tutorial",
+    "section": "5 Running the Dashboard",
+    "text": "5 Running the Dashboard\nTo explore the results interactively, launch the Streamlit app:\nstreamlit run app.py\nThe dashboard provides:\n\nmagnitude vs. impact comparisons\n\ndepth-based summaries\n\nregional vulnerability visualizations\n\ntime-series trends for deaths and damage"
+  },
+  {
+    "objectID": "tutorial.html#reproducibility-notes",
+    "href": "tutorial.html#reproducibility-notes",
+    "title": "Tutorial",
+    "section": "6 Reproducibility Notes",
+    "text": "6 Reproducibility Notes\n\nThe pipeline depends on external APIs (USGS and NOAA/NCEI)\n\nRunning the pipeline may take several minutes due to data retrieval\n\nResults may vary slightly over time as source data updates"
+  },
+  {
+    "objectID": "tutorial.html#troubleshooting",
+    "href": "tutorial.html#troubleshooting",
+    "title": "Tutorial",
+    "section": "7 Troubleshooting",
+    "text": "7 Troubleshooting\nIssue: Missing dataset when launching the app\n→ Run the pipeline first: ~bash python scripts/run_pipeline.py~\nIssue: Slow data retrieval\n→ This is expected when fetching large time ranges from the USGS API\nIssue: Import errors\n→ Ensure the package is installed using: ~bash pip install -e .~"
+  },
+  {
+    "objectID": "tutorial.html#summary",
+    "href": "tutorial.html#summary",
+    "title": "Tutorial",
+    "section": "8 Summary",
+    "text": "8 Summary\nThis tutorial demonstrates how to:\n\ninstall and configure the project\n\ngenerate the dataset from raw sources\n\nrun analysis functions\n\nlaunch the interactive dashboard\n\nTogether, these steps reproduce the full data science workflow used in the project."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Earthquake Analysis",
+    "section": "",
+    "text": "This project analyzes global earthquake patterns and their real-world human impact from 2000 to 2024. The goal is to move beyond purely physical characteristics of earthquakes (such as magnitude and depth) and examine how these events translate into human consequences, including deaths and economic damage.\nTo accomplish this, we combine two major public datasets:\n\nUSGS (United States Geological Survey): comprehensive global earthquake event data\n\nNOAA/NCEI (National Centers for Environmental Information): records of significant earthquakes with associated impact metrics such as deaths and estimated damage\n\nBy integrating these sources, the project provides a more complete view of how earthquake characteristics relate to real-world outcomes."
+  },
+  {
+    "objectID": "index.html#overview",
+    "href": "index.html#overview",
+    "title": "Earthquake Analysis",
+    "section": "",
+    "text": "This project analyzes global earthquake patterns and their real-world human impact from 2000 to 2024. The goal is to move beyond purely physical characteristics of earthquakes (such as magnitude and depth) and examine how these events translate into human consequences, including deaths and economic damage.\nTo accomplish this, we combine two major public datasets:\n\nUSGS (United States Geological Survey): comprehensive global earthquake event data\n\nNOAA/NCEI (National Centers for Environmental Information): records of significant earthquakes with associated impact metrics such as deaths and estimated damage\n\nBy integrating these sources, the project provides a more complete view of how earthquake characteristics relate to real-world outcomes."
+  },
+  {
+    "objectID": "index.html#motivation",
+    "href": "index.html#motivation",
+    "title": "Earthquake Analysis",
+    "section": "2 Motivation",
+    "text": "2 Motivation\nEarthquakes are often described using physical metrics like magnitude and depth, but these alone do not fully explain their impact on human populations. Two earthquakes of similar magnitude can result in vastly different levels of damage depending on location, infrastructure, and preparedness.\nThis project aims to explore:\n\nhow physical earthquake properties translate into human impact\n\nwhether certain regions experience disproportionate outcomes\n\nhow earthquake-related damage and deaths have evolved over time\n\nUnderstanding these relationships provides insight into vulnerability, risk, and the limitations of available data."
+  },
+  {
+    "objectID": "index.html#research-questions",
+    "href": "index.html#research-questions",
+    "title": "Earthquake Analysis",
+    "section": "3 Research Questions",
+    "text": "3 Research Questions\nThe analysis is structured around four primary research questions:\n\nMagnitude vs. Impact\nDo higher-magnitude earthquakes consistently result in greater deaths and economic damage?\nDepth vs. Severity\nDoes the depth of an earthquake influence its potential to cause damage?\nRegional Vulnerability\nWhich regions appear most affected by earthquakes, and are some disproportionately vulnerable relative to earthquake size?\nTrends Over Time\nHow have earthquake-related deaths and damages changed from 2000 to 2024?"
+  },
+  {
+    "objectID": "index.html#data-pipeline-overview",
+    "href": "index.html#data-pipeline-overview",
+    "title": "Earthquake Analysis",
+    "section": "4 Data Pipeline Overview",
+    "text": "4 Data Pipeline Overview\nThe project follows a full data science pipeline:\n\nData Collection\n\nFetch earthquake event data from the USGS API\n\nFetch significant earthquake impact data from NOAA/NCEI\n\nData Integration\n\nMatch events across datasets using time and geographic proximity\n\nResolve duplicates and inconsistencies\n\nData Cleaning and Transformation\n\nStandardize variables such as magnitude, depth, and location\n\nHandle missing values for deaths and damage\n\nAnalysis and Aggregation\n\nGroup events by magnitude bins and depth categories\n\nCompute summary statistics (medians, totals, rolling averages)\n\nVisualization and Communication\n\nInteractive dashboard built with Streamlit\n\nDocumentation and report generated using Quarto"
+  },
+  {
+    "objectID": "index.html#interactive-dashboard",
+    "href": "index.html#interactive-dashboard",
+    "title": "Earthquake Analysis",
+    "section": "5 Interactive Dashboard",
+    "text": "5 Interactive Dashboard\nThe project includes a fully interactive Streamlit dashboard that allows users to explore the data and results dynamically.\n👉 [Launch the Streamlit App] (https://stat386earthquakeanalysis.streamlit.app/)\nThe dashboard provides:\n\nmagnitude vs. impact comparisons\n\ndepth-based summaries\n\nregional breakdowns of earthquake impact\n\ntime-series visualizations of deaths and damage"
+  },
+  {
+    "objectID": "index.html#repository-structure",
+    "href": "index.html#repository-structure",
+    "title": "Earthquake Analysis",
+    "section": "6 Repository Structure",
+    "text": "6 Repository Structure\nThe repository is organized as a Python package with modular components:\n\nearthquake_analysis/\n\ndata collection (fetch.py)\n\ndata merging (merge.py)\n\ndata cleaning (clean.py)\n\nanalysis functions (analyze.py)\n\nscripts/\n\npipeline execution (run_pipeline.py)\n\napp.py\n\nStreamlit dashboard\n\ndocs/\n\nQuarto documentation, tutorial, and final report"
+  },
+  {
+    "objectID": "index.html#key-takeaways",
+    "href": "index.html#key-takeaways",
+    "title": "Earthquake Analysis",
+    "section": "7 Key Takeaways",
+    "text": "7 Key Takeaways\nThis project highlights several important insights:\n\nearthquake magnitude alone does not fully determine impact\n\nshallow earthquakes tend to be more damaging than deeper ones\n\nregional factors play a significant role in vulnerability\n\ndata limitations and reporting differences affect conclusions"
+  },
+  {
+    "objectID": "index.html#further-reading",
+    "href": "index.html#further-reading",
+    "title": "Earthquake Analysis",
+    "section": "8 Further Reading",
+    "text": "8 Further Reading\n\nSee the Tutorial page for instructions on running the pipeline and using the package\n\nSee the Final Report for a detailed discussion of methods, results, and limitations"
+  }
+]
